@@ -5,10 +5,11 @@ public class TryProcessing extends PApplet {
     public static final int WIDTH = 640;
     public static final int HEIGHT = 480;
     public static final int DIAMETER = 10;
-    int circle1Speed = 0;
-    int circle2Speed = 0;
-    int circle3Speed = 0;
-    int circle4Speed = 0;
+    private static final int BALL_COUNT = 4;
+    private static final int FRAME = 5;
+    int[] xPositionOfBall = new int[BALL_COUNT];
+    int[] yPositionOfBall = new int[BALL_COUNT];
+    int[] unitsPerFrame = new int[BALL_COUNT];
 
     public static void main(String[] args) {
         PApplet.main("TryProcessing", args);
@@ -22,33 +23,30 @@ public class TryProcessing extends PApplet {
 
     @Override
     public void setup() {
+        initialSetup();
+    }
+
+    private void initialSetup() {
+        for (int index = 0; index < BALL_COUNT; index++) {
+            xPositionOfBall[index] = 0;
+            yPositionOfBall[index] = HEIGHT * (index + 1) / FRAME;
+            unitsPerFrame[index] = index + 1;
+        }
     }
 
     @Override
     public void draw() {
-        drawCircle1();
-        drawCircle2();
-        drawCircle3();
-        drawCircle4();
+        for(int index = 0; index < BALL_COUNT; index++) {
+            circle(index);
+            movePosition(index);
+        }
     }
 
-    private void drawCircle1() {
-        ellipse(circle1Speed, HEIGHT / 5, DIAMETER, DIAMETER);
-        circle1Speed++;
+    private void movePosition(int index) {
+        xPositionOfBall[index] += unitsPerFrame[index];
     }
 
-    private void drawCircle2() {
-        ellipse(circle2Speed, HEIGHT / 4, DIAMETER, DIAMETER);
-        circle2Speed += 2;
-    }
-
-    private void drawCircle3() {
-        ellipse(circle3Speed, HEIGHT / 3, DIAMETER, DIAMETER);
-        circle3Speed += 3;
-    }
-
-    private void drawCircle4() {
-        ellipse(circle4Speed, HEIGHT / 2, DIAMETER, DIAMETER);
-        circle4Speed += 4;
+    private void circle(int index) {
+        ellipse(xPositionOfBall[index], yPositionOfBall[index], DIAMETER, DIAMETER);
     }
 }
